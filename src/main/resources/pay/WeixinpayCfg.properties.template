@@ -1,0 +1,7 @@
+app.id=wx48a638ec885849d9
+mch.id=1385095302
+mch.key=CAaRopPo9GSBmR8pbSngCxnfWXn6zlCB
+notify.url=http://xiyuan.duapp.com/pay/weixinCallback
+time.expire=45
+trade.type=APP
+debug=true
