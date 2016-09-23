@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
+<generatorConfiguration>
+    <classPathEntry
+            location="D:/SoftwareForCode/apache-maven-3.3.9/repository/mysql/mysql-connector-java/5.1.39/mysql-connector-java-5.1.39.jar" />
+    <context id="context1" targetRuntime="MyBatis3">
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="jdbc:mysql://localhost:3306/pay?useUnicode=true&amp;characterEncoding=utf-8"
+                        userId="root" password="im0918" />
+        <javaModelGenerator targetPackage="com.xiyuan.demo.model"
+                            targetProject="src\main\scala" />
+        <sqlMapGenerator targetPackage="mapping"
+                         targetProject="src\main\resources" />
+        <javaClientGenerator targetPackage="com.xiyuan.demo.dao"
+            targetProject="src\main\scala" type="XMLMAPPER" />
+        <table schema="mybits" tableName="pay_item" enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false" >
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
+    </context>
+</generatorConfiguration>

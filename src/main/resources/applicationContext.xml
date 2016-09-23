@@ -1,0 +1,80 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx" 
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:context="http://www.springframework.org/schema/context" 
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:cache="http://www.springframework.org/schema/cache" 
+	xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+		http://www.springframework.org/schema/tx
+		http://www.springframework.org/schema/tx/spring-tx-4.3.xsd
+		http://www.springframework.org/schema/context
+		http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/mvc
+		http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
+		http://www.springframework.org/schema/cache
+		http://www.springframework.org/schema/cache/spring-cache-4.3.xsd
+		http://www.springframework.org/schema/task
+		http://www.springframework.org/schema/task/spring-task-4.3.xsd
+		">
+
+	<!-- 设置扫描@Controller,@Component, @Repository, @Transactional等注解的目录 -->
+	<context:component-scan base-package="com.xiyuan" />
+	<context:annotation-config />
+
+	<mvc:annotation-driven />
+	<mvc:default-servlet-handler />
+	<!-- 打开aop注解 -->
+	<aop:aspectj-autoproxy proxy-target-class="true" />
+
+	<!-- 配置数据源 -->
+	<bean id="propertyConfigurer"
+		  class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>classpath:property/database.properties</value>
+			</list>
+		</property>
+	</bean>
+	<bean id="mySqlDataSource" class="org.apache.commons.dbcp.BasicDataSource">
+		<property name="driverClassName" value="${ds.driver}"/>
+		<property name="url"
+				  value="${ds.url}">
+		</property>
+
+		<property name="username" value="${ds.username}"/>
+		<property name="password" value="${ds.password}"/>
+
+		<property name="validationQuery" value="select 1 from dual"/>
+		<property name="testOnBorrow" value="true"/>
+	</bean>
+	<!-- 配置数据源结束 -->
+
+	<!-- 配置session工厂 -->
+	<bean id="sessionFactory"
+		  class="org.mybatis.spring.SqlSessionFactoryBean"
+		  p:dataSource-ref="mySqlDataSource"
+		  p:mapperLocations="classpath:mapping/*.xml"
+	/>
+
+	<!--查找dao-->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer"
+		  p:basePackage="com.xiyuan.*"
+		  p:sqlSessionFactoryBeanName="sessionFactory"
+	/>
+
+	<!-- 事务管理配置 -->
+	<bean id="transactionManager"
+		  class="org.springframework.jdbc.datasource.DataSourceTransactionManager"
+		  p:dataSource-ref="mySqlDataSource"
+	/>
+	<tx:annotation-driven transaction-manager="transactionManager" />
+
+</beans>
