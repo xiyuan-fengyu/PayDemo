@@ -3,6 +3,7 @@ package com.xiyuan.pay.ali;
 import com.xiyuan.pay.ali.request.AlipayQueryRequest;
 import com.xiyuan.pay.ali.response.AlipayAsyncNotifyResult;
 import com.xiyuan.pay.ali.response.AlipayQueryResult;
+import com.xiyuan.pay.ali.value.AlipayStatus;
 import com.xiyuan.pay.util.DateUtil;
 import com.xiyuan.pay.util.RsaUtils;
 
@@ -167,6 +168,14 @@ public class Alipay {
         KeyVal signKeyVal = new KeyVal("sign", sign);
         String params = strEncodedBld.toString() + "&sign=" + signKeyVal.valueEncoded;
         return new AlipayQueryRequest(params).execute(AlipayQueryResult.class);
+    }
+
+    public static boolean isPaySuccessOrFinish(AlipayQueryResult payResult) {
+        if (payResult == null) {
+            return false;
+        }
+        String tradeStatus = payResult.getAlipay_trade_query_response().getTrade_status();
+        return tradeStatus.equals(AlipayStatus.TRADE_SUCCESS) || tradeStatus.equals(AlipayStatus.TRADE_FINISHED);
     }
 
     private static class KeyVal {
