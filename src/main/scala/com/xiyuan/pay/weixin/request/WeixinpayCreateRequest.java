@@ -53,7 +53,7 @@ public class WeixinpayCreateRequest extends WeixinpayRequest {
      * @param total_fee 总金额，单位元
      * @param spbill_create_ip 客户终端IP
      */
-    public WeixinpayCreateRequest(int id, String body, String detail, String out_trade_no, double total_fee, String spbill_create_ip) {
+    public WeixinpayCreateRequest(String id, String body, String detail, String out_trade_no, double total_fee, String spbill_create_ip) {
         this.apiUrl = "https://api.mch.weixin.qq.com/pay/unifiedorder";
 
         this.appid = WeixinpayCfg.app_id;

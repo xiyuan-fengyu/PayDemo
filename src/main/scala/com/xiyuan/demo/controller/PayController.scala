@@ -47,7 +47,7 @@ class PayController {
       if (payType == 0) {
         // 支付宝
         // 构建支付信息，然后返回给client，client以此进行支付(Android和IOS类似)  https://doc.open.alipay.com/docs/doc.htm?spm=a219a.7629140.0.0.PsmSu9&treeId=193&articleId=105300&docType=1
-        val orderStr = Alipay.generatePayInfo(payItem.getId, "担保交易", "黄牛之家担保交易", payItem.getOutTradeNo, amount)
+        val orderStr = Alipay.generatePayInfo(payItem.getId.toString, "担保交易", "黄牛之家担保交易", payItem.getOutTradeNo, amount)
         if (orderStr != null) {
           ResponseUtil.createJson(true, "订单创建成功", orderStr)
         }
@@ -60,7 +60,7 @@ class PayController {
         //创建预支付订单
         //在正式开发的时需要检查当前订单是否已经预创建过，已经预创建过的订单不能再次使用相同的商户订单号创建订单，要么更新商户订单号，要么使用旧的prepayid
         val userIp = IpUtil.get(request)
-        val payReq = Weixinpay.createPayReq(payItem.getId, "担保交易", "黄牛之家担保交易", payItem.getOutTradeNo, amount, userIp)
+        val payReq = Weixinpay.createPayReq(payItem.getId.toString, "担保交易", "黄牛之家担保交易", payItem.getOutTradeNo, amount, userIp)
         if (payReq != null) {
           //预创建支付订单成功
           ResponseUtil.createJson(true, "微信支付订单预创建成功", payReq)
@@ -87,10 +87,10 @@ class PayController {
     */
   @RequestMapping(value = Array("pay/aliCallback/{id}"))
   @ResponseBody
-  def aliCallback(@PathVariable id: Int, notify: AlipayAsyncNotifyResult, request: HttpServletRequest): String = {
+  def aliCallback(@PathVariable id: String, notify: AlipayAsyncNotifyResult, request: HttpServletRequest): String = {
     LogController.logs += XYLog.argsToString(notify)
 
-    val payItem = dao.selectByPrimaryKey(id)
+    val payItem = dao.selectByPrimaryKey(id.toInt)
 
     LogController.logs += XYLog.argsToString(payItem)
 
@@ -125,12 +125,12 @@ class PayController {
 
   @RequestMapping(value = Array("pay/weixinCallback/{id}"))
   @ResponseBody
-  def weixinCallback(@PathVariable id: Int, request: HttpServletRequest): String = {
+  def weixinCallback(@PathVariable id: String, request: HttpServletRequest): String = {
     val in = request.getInputStream
     val notify = XmlUtil.convertoObj(in, classOf[WeixinpayAsyncNotifyResult])
     LogController.logs += XYLog.argsToString(notify)
 
-    val payItem = dao.selectByPrimaryKey(id)
+    val payItem = dao.selectByPrimaryKey(id.toInt)
     if (payItem == null) {
       Weixinpay.generateResultForNotify("FAIL", "订单不存在")
     }

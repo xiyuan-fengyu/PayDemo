@@ -20,7 +20,7 @@ import java.util.List;
  */
 public class Alipay {
 
-    public static String generatePayInfo(int id, String goodsName, String describe, String orderId, double amount) {
+    public static String generatePayInfo(String id, String goodsName, String describe, String orderId, double amount) {
         List<KeyVal> keyVals = getOrderKeyVals(id, goodsName, describe, orderId, amount);
 
         StringBuilder strBld = new StringBuilder();
@@ -59,7 +59,7 @@ public class Alipay {
         }
     }
 
-    private static List<KeyVal> getOrderKeyVals(int id, String goodsName, String describe, String orderId, double amount) {
+    private static List<KeyVal> getOrderKeyVals(String id, String goodsName, String describe, String orderId, double amount) {
         List<KeyVal> keyVals = new ArrayList<>();
         keyVals.add(new KeyVal("app_id", "" + AlipayCfg.app_id));
         keyVals.add(new KeyVal("biz_content", "{" +
