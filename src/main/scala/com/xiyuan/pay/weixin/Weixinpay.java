@@ -34,6 +34,7 @@ public class Weixinpay {
         if (SignUtil.sign(result, WeixinpayCfg.mch_key).equals(result.getSign()) && result.getReturn_code().equals(WeixinpayStatus.success) && result.getResult_code().equals(WeixinpayStatus.success)) {
             //预创建支付订单成功
             Map<String, String> keyVals = new TreeMap<>();
+            keyVals.put("appId", WeixinpayCfg.app_id);
             keyVals.put("timeStamp", "" + System.currentTimeMillis() / 1000);
             keyVals.put("nonceStr", RandomUtil.generateStr(20));
             keyVals.put("package", "prepay_id=" + result.getPrepay_id());
