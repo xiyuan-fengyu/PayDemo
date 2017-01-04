@@ -60,7 +60,7 @@ class PayController {
         //创建预支付订单
         //在正式开发的时需要检查当前订单是否已经预创建过，已经预创建过的订单不能再次使用相同的商户订单号创建订单，要么更新商户订单号，要么使用旧的prepayid
         val userIp = IpUtil.get(request)
-        val payReq = Weixinpay.createPayReq(payItem.getId.toString, "担保交易", "黄牛之家担保交易", payItem.getOutTradeNo, amount, userIp)
+        val payReq = Weixinpay.createPayReq(payItem.getId.toString, "担保交易", "黄牛之家担保交易", payItem.getOutTradeNo, amount, userIp, null)
         if (payReq != null) {
           //预创建支付订单成功
           ResponseUtil.createJson(true, "微信支付订单预创建成功", payReq)

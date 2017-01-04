@@ -14,8 +14,8 @@ import com.xiyuan.pay.weixin.value.WeixinpayStatus;
  */
 public class Weixinpay {
 
-    public static PayReq createPayReq(String id, String body, String detail, String out_trade_no, double total_fee, String spbill_create_ip) {
-        WeixinpayCreateRequest request = new WeixinpayCreateRequest(id, body, detail, out_trade_no, total_fee, spbill_create_ip);
+    public static PayReq createPayReq(String id, String body, String detail, String out_trade_no, double total_fee, String spbill_create_ip, String openid) {
+        WeixinpayCreateRequest request = new WeixinpayCreateRequest(id, body, detail, out_trade_no, total_fee, spbill_create_ip, openid);
         WeixinpayCreateResult result = request.execute(WeixinpayCreateResult.class);
         if (SignUtil.sign(result, WeixinpayCfg.mch_key).equals(result.getSign()) && result.getReturn_code().equals(WeixinpayStatus.success) && result.getResult_code().equals(WeixinpayStatus.success)) {
             //预创建支付订单成功
