@@ -1,5 +1,6 @@
 package com.xiyuan.pay.weixin;
 
+import com.xiyuan.pay.util.RandomUtil;
 import com.xiyuan.pay.weixin.model.PayReq;
 import com.xiyuan.pay.weixin.request.WeixinpayCreateRequest;
 import com.xiyuan.pay.weixin.request.WeixinpayQueryRequest;
@@ -9,17 +10,36 @@ import com.xiyuan.pay.weixin.response.WeixinpayQueryResult;
 import com.xiyuan.pay.weixin.util.SignUtil;
 import com.xiyuan.pay.weixin.value.WeixinpayStatus;
 
+import java.util.Map;
+import java.util.TreeMap;
+
 /**
  * Created by xiyuan_fengyu on 2016/8/26.
  */
 public class Weixinpay {
 
-    public static PayReq createPayReq(String id, String body, String detail, String out_trade_no, double total_fee, String spbill_create_ip, String openid) {
-        WeixinpayCreateRequest request = new WeixinpayCreateRequest(id, body, detail, out_trade_no, total_fee, spbill_create_ip, openid);
+    public static PayReq createPayReq(String id, String body, String detail, String out_trade_no, double total_fee, String spbill_create_ip) {
+        WeixinpayCreateRequest request = new WeixinpayCreateRequest(id, body, detail, out_trade_no, total_fee, spbill_create_ip);
         WeixinpayCreateResult result = request.execute(WeixinpayCreateResult.class);
         if (SignUtil.sign(result, WeixinpayCfg.mch_key).equals(result.getSign()) && result.getReturn_code().equals(WeixinpayStatus.success) && result.getResult_code().equals(WeixinpayStatus.success)) {
             //预创建支付订单成功
             return new PayReq(result.getPrepay_id());
+        }
+        else return null;
+    }
+
+    public static Map<String, String> createPayReqSP(String id, String body, String detail, String out_trade_no, double total_fee, String spbill_create_ip, String openid) {
+        WeixinpayCreateRequest request = new WeixinpayCreateRequest(id, body, detail, out_trade_no, total_fee, spbill_create_ip, openid);
+        WeixinpayCreateResult result = request.execute(WeixinpayCreateResult.class);
+        if (SignUtil.sign(result, WeixinpayCfg.mch_key).equals(result.getSign()) && result.getReturn_code().equals(WeixinpayStatus.success) && result.getResult_code().equals(WeixinpayStatus.success)) {
+            //预创建支付订单成功
+            Map<String, String> keyVals = new TreeMap<>();
+            keyVals.put("timeStamp", "" + System.currentTimeMillis() / 1000);
+            keyVals.put("nonceStr", RandomUtil.generateStr(20));
+            keyVals.put("package", "prepay_id=" + result.getPrepay_id());
+            keyVals.put("signType", "MD5");
+            keyVals.put("paySign", SignUtil.sign(keyVals, WeixinpayCfg.mch_key));
+            return keyVals;
         }
         else return null;
     }
