@@ -45,6 +45,8 @@ public class WeixinpayCreateRequest extends WeixinpayRequest {
 
     public final String trade_type;
 
+    public final String openid;
+
     /**
      * @param  id 主键id
      * @param body 商品描述
@@ -54,6 +56,19 @@ public class WeixinpayCreateRequest extends WeixinpayRequest {
      * @param spbill_create_ip 客户终端IP
      */
     public WeixinpayCreateRequest(String id, String body, String detail, String out_trade_no, double total_fee, String spbill_create_ip) {
+        this(id, body, detail, out_trade_no, total_fee, spbill_create_ip, null);
+    }
+
+    /**
+     * @param  id 主键id
+     * @param body 商品描述
+     * @param detail 商品详情
+     * @param out_trade_no 商户订单号
+     * @param total_fee 总金额，单位元
+     * @param spbill_create_ip 客户终端IP
+     * @param openid  用户标识
+     */
+    public WeixinpayCreateRequest(String id, String body, String detail, String out_trade_no, double total_fee, String spbill_create_ip, String openid) {
         this.apiUrl = "https://api.mch.weixin.qq.com/pay/unifiedorder";
 
         this.appid = WeixinpayCfg.app_id;
@@ -62,6 +77,7 @@ public class WeixinpayCreateRequest extends WeixinpayRequest {
         this.mch_id = "" + WeixinpayCfg.mch_id;
         this.nonce_str = RandomUtil.generateStr(10, 20);
         this.notify_url = WeixinpayCfg.notify_url + "/"  + id;
+        this.openid = openid;
         this.out_trade_no = out_trade_no;
         this.spbill_create_ip = spbill_create_ip;
         //配置中的单位为分钟
@@ -86,6 +102,10 @@ public class WeixinpayCreateRequest extends WeixinpayRequest {
         params.put("nonce_str", this.nonce_str);
 
         params.put("notify_url", this.notify_url);
+
+        if (openid != null && !openid.isEmpty()) {
+            params.put("openid", this.openid);
+        }
 
         params.put("out_trade_no", this.out_trade_no);
 
