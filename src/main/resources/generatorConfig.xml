@@ -6,7 +6,7 @@
     <context id="context1" targetRuntime="MyBatis3">
         <jdbcConnection driverClass="com.mysql.jdbc.Driver"
                         connectionURL="jdbc:mysql://localhost:3306/pay?useUnicode=true&amp;characterEncoding=utf-8"
-                        userId="root" password="im0918" />
+                        userId="root" password="****" />
         <javaModelGenerator targetPackage="com.xiyuan.demo.model"
                             targetProject="src\main\scala" />
         <sqlMapGenerator targetPackage="mapping"
