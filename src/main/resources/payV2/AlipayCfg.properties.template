@@ -1,0 +1,12 @@
+gateway=https://openapi.alipay.com/gateway.do
+app.id=
+seller.id=
+merchant.private.key=
+alipay.public.key=
+notify.url=http://.../payCallback/alipayCallback/{orderType}/{outTradeNo}
+data.format=json
+data.charset=utf-8
+data.sign.type=RSA
+disable_pay_channels=credit_group
+timeout=30m
+debug=false

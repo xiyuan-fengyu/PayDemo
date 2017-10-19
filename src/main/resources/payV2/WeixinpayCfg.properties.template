@@ -1,0 +1,9 @@
+app.id=
+merchant.id=
+merchant.key=
+notify.url=http://.../payCallback/weixinpayCallback/{orderType}/{outTradeNo}
+timeout=30
+trade.type=APP
+limit_pay=no_credit
+ssl.path=
+debug=false
