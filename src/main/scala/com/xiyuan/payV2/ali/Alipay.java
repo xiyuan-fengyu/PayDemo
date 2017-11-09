@@ -189,4 +189,14 @@ public class Alipay {
         return false;
     }
 
+    /**
+     * 异步通知是否为成功支付的通知
+     * @param notify
+     * @return
+     */
+    public static boolean isTradeSuccess(Map<String, String[]> notify) {
+        String[] trade_status = notify.get("trade_status");
+        return trade_status != null && trade_status.length == 1 && "TRADE_SUCCESS".equals(trade_status[0]);
+    }
+
 }
